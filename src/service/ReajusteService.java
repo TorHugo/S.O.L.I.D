@@ -2,21 +2,27 @@ package service;
 
 import exception.ValidacaoException;
 import model.Funcionario;
+import validation.ValidacaoReajuste;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class ReajusteService {
 
+    private List<ValidacaoReajuste> validacoes;
+    public ReajusteService(List<ValidacaoReajuste> validacoes) {
+        this.validacoes = validacoes;
+    }
+
     public void reajustarSalarioFuncionario(Funcionario funcionario, BigDecimal aumento) throws ValidacaoException {
 
-        BigDecimal salarioAtual = funcionario.getSalario();
-        BigDecimal percentualReajuste = aumento.divide(salarioAtual, RoundingMode.HALF_UP);
+        this.validacoes.forEach(validacao -> validacao.validarAumento(funcionario, aumento));
+        this.validacoes.forEach(validacao -> validacao.validarTempoUltimoReajuste(funcionario));
 
-        if (percentualReajuste.compareTo(new BigDecimal("0.4")) > 0)
-            throw new ValidacaoException("Reajuste não pode ser maior que 40% do salário.");
-
-        BigDecimal salarioReajustado = salarioAtual.add(aumento);
+        BigDecimal salarioReajustado = funcionario.getSalario().add(aumento);
         funcionario.atualizarSalario(salarioReajustado);
     }
 }
