@@ -7,6 +7,5 @@ import java.math.BigDecimal;
 
 public interface ValidacaoReajuste {
 
-    void validarAumento(Funcionario funcionario, BigDecimal aumento);
-    void validarTempoUltimoReajuste(Funcionario funcionario);
+    void validar(Funcionario funcionario, BigDecimal aumento);
 }

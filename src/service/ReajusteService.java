@@ -19,8 +19,7 @@ public class ReajusteService {
 
     public void reajustarSalarioFuncionario(Funcionario funcionario, BigDecimal aumento) throws ValidacaoException {
 
-        this.validacoes.forEach(validacao -> validacao.validarAumento(funcionario, aumento));
-        this.validacoes.forEach(validacao -> validacao.validarTempoUltimoReajuste(funcionario));
+        this.validacoes.forEach(validacao -> validacao.validar(funcionario, aumento));
 
         BigDecimal salarioReajustado = funcionario.getSalario().add(aumento);
         funcionario.atualizarSalario(salarioReajustado);
